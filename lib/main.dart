@@ -72,7 +72,7 @@ class _MyLargeTitleState extends State<MyLargeTitle> {
     super.dispose();
   }
 //dispose는 위젯이 스크린에서 제거될 때 호출되는 method
-//일종의 cancle
+//일종의 cancle(위젯트리에서 제거함)
 
   @override
   Widget build(BuildContext context) {
