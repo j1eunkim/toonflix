@@ -19,11 +19,10 @@ class HomeScreen extends StatelessWidget {
         elevation: 1,
         backgroundColor: Colors.white,
         foregroundColor: const Color.fromARGB(255, 61, 165, 64),
+        centerTitle: true,
         title: const Text(
-          "Today's webtoon",
-          style: TextStyle(
-            fontSize: 20,
-          ),
+          "오늘의 웹툰",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: FutureBuilder(

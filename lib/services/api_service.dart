@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:toonflix/models/webtoon_detail_model.dart';
+import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 
 class ApiService {
@@ -33,6 +35,38 @@ class ApiService {
         //fromJson을 쓰지 않고 할 수도 있음 WebtoonModel class에서 late를 지정해주면 됨
       }
       return webtoonInstances;
+    }
+    throw Error();
+  }
+
+//위에서 url을 fetch해온 방식 똑같이 detail에 대한 내용을 담고 있는 url을 fetch
+  static Future<WebtoonDetailModel> getToonById(String id) async {
+    final url = Uri.parse("$baseUrl/$id");
+    //getToonById method는 baseUrl과 id를 가지고 request를 보냄
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final webtoon = jsonDecode(response.body);
+      return WebtoonDetailModel.fromJson(webtoon);
+      //서버로부터 받은 json을 가지고 WebtoonDtailModel을 만들었음
+    }
+    throw Error();
+  }
+
+  static Future<List<WebtoonEpisodeModel>> getLatestEpisodesById(
+      String id) async {
+    List<WebtoonEpisodeModel> episodesInstances = [];
+    final url = Uri.parse("$baseUrl/$id/episodes");
+    //getLatestEpisodesById는 baseUrl과 id값에 따른 episode목록을 가져옴
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final episodes = jsonDecode(response.body);
+      //받아온 episodes라는 긴 리스트를 json으로 바꾸고
+      for (var episode in episodes) {
+        episodesInstances.add(WebtoonEpisodeModel.fromJson(episode));
+        //각각의 episode json에 WebtoonEpisodeModel(얘네는 다 class임)을 생성해서,
+        //그걸 위에서 선언했던 episodeInstances에 add해서 WebtoonEpisodeModel리스트에 넣음
+      }
+      return episodesInstances;
     }
     throw Error();
   }
